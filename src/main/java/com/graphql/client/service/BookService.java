@@ -2,8 +2,10 @@ package com.graphql.client.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.graphql.client.entity.Book;
 
@@ -14,9 +16,12 @@ public class BookService
 {
 	private final HttpGraphQlClient graphQlClient;
 
-	public BookService(HttpGraphQlClient graphQlClient)
+	public BookService(@Value("${graphql.server.baseUrl}") String baseUrl)
 	{
-		this.graphQlClient = graphQlClient;
+		WebClient client = WebClient.builder()
+				.baseUrl(baseUrl)
+				.build();
+		graphQlClient = HttpGraphQlClient.builder(client).build();
 	}
 
 	public Mono<List<Book>> getBooks()
