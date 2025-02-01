@@ -9,15 +9,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class GraphqlClientConfig
 {
-	private final String baseUrl;
-
-	public GraphqlClientConfig(@Value("${graphql.server.baseUrl}") String baseUrl)
-	{
-		this.baseUrl = baseUrl;
-	}
-
 	@Bean
-	HttpGraphQlClient graphQlClient()
+	HttpGraphQlClient graphQlClient(@Value("${graphql.server.baseUrl}") String baseUrl)
 	{
 		WebClient client = WebClient.builder()
 				.baseUrl(baseUrl)
